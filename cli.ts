@@ -5,7 +5,11 @@ import {
 import { game, solve, Game } from "./index.ts"
 
 function print(game: Game) {
-  console.log(`[ ${game.state.map(x => x === 1 ? "X" : "*").join(" ")} ]`)
+  const result = solve(game).map(x => x.toString().padStart(4, " "));
+  console.log()
+  console.log("%c" + result.join(" | "), "color: gray");
+  console.log(game.state.map(x => x === 1 ? "X" : "O").map(x => x.padStart(4, " ")).join(" | "));
+  console.log()
 }
 
 const length = await Number.prompt({
