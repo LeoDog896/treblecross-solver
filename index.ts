@@ -17,19 +17,22 @@ export function game(size: number, state = new Array(size).fill(0)): Game {
   return {
     state,
     size,
-    amountPlayed: state.filter(x => x === 1).length,
+    amountPlayed: state.filter((x) => x === 1).length,
     play(x: number | number[]): Game {
       if (typeof x === "number") {
         // return the same game but with the given move played
-        return game(size, state.map((s, i) => i === x ? 1 : s))
+        return game(size, state.map((s, i) => i === x ? 1 : s));
       } else {
-        return game(size, state.map((s, i) => x.includes(i) ? 1 : s))
+        return game(size, state.map((s, i) => x.includes(i) ? 1 : s));
       }
     },
     isWinningMove(x: number): boolean {
       const checkedState = this.play(x).state;
       for (let i = 0; i < size; i++) {
-        if (checkedState[i] === 1 && checkedState[i + 1] === 1 && checkedState[i + 2] === 1) {
+        if (
+          checkedState[i] === 1 && checkedState[i + 1] === 1 &&
+          checkedState[i + 2] === 1
+        ) {
           return true;
         }
       }
@@ -45,8 +48,8 @@ export function game(size: number, state = new Array(size).fill(0)): Game {
     },
     canPlay(x: number): boolean {
       return state[x] === 0;
-    }
-  }
+    },
+  };
 }
 
 /**
@@ -56,17 +59,15 @@ export function game(size: number, state = new Array(size).fill(0)): Game {
  */
 export function solve(game: Game): number[] {
   return game.state.map((_, x) => {
-
     if (game.canPlay(x) && game.isWinningMove(x)) {
       return (game.size + 1 - game.amountPlayed) / 2;
     }
 
     if (game.canPlay(x)) {
-      const newGame = game.play(x)
+      const newGame = game.play(x);
       return -solve(newGame).reduce((a, b) => Math.max(a, b), -Infinity);
     }
 
     return -game.size;
-
-  })
+  });
 }
