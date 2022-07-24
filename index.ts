@@ -17,12 +17,13 @@ export function game(size: number, state = new Array(size).fill(0)): Game {
   return {
     state,
     size,
-    amountPlayed: state.filter((x) => x === 1).length,
+    amountPlayed: state.filter(x => x === 1).length,
     play(...x: number[]): Game {
       return game(size, state.map((s, i) => x.includes(i) ? 1 : s));
     },
     isWinningMove(x: number): boolean {
       const checkedState = this.play(x).state;
+      
       for (let i = 0; i < size; i++) {
         if (
           checkedState[i] === 1 && checkedState[i + 1] === 1 &&
@@ -41,7 +42,7 @@ export function game(size: number, state = new Array(size).fill(0)): Game {
       }
       return false;
     },
-    canPlay(x: number): boolean {
+    canPlay(x) {
       return state[x] === 0;
     },
   };
