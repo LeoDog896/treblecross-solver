@@ -2,7 +2,7 @@ export interface Game {
   state: number[];
   size: number;
   amountPlayed: number;
-  play(x: number | number[]): Game;
+  play(...x: number[]): Game;
   isWinningMove(x: number): boolean;
   gameOver(): boolean;
   canPlay(x: number): boolean;
@@ -18,13 +18,8 @@ export function game(size: number, state = new Array(size).fill(0)): Game {
     state,
     size,
     amountPlayed: state.filter((x) => x === 1).length,
-    play(x: number | number[]): Game {
-      if (typeof x === "number") {
-        // return the same game but with the given move played
-        return game(size, state.map((s, i) => i === x ? 1 : s));
-      } else {
-        return game(size, state.map((s, i) => x.includes(i) ? 1 : s));
-      }
+    play(...x: number[]): Game {
+      return game(size, state.map((s, i) => x.includes(i) ? 1 : s));
     },
     isWinningMove(x: number): boolean {
       const checkedState = this.play(x).state;
